@@ -1,0 +1,333 @@
+{
+	"info": {
+		"_postman_id": "a022e670-da0d-463b-bb95-e94388bc202a",
+		"name": "TESTPAULAAPIPRACTICE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List of employees",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "792f526d-1519-4e0b-a4d8-4c51e2c1867b",
+						"exec": [
+							"//Validate status\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"//Validate response time\r",
+							"pm.test(\"Response time is less than 5000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+							"});\r",
+							"//Validate successful GET\r",
+							"pm.test(\"Successful GET request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/employees",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a particular employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fce57caa-b46e-4f93-8a29-13687e462e63",
+						"exec": [
+							"//Validate status\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"//Validate a string is in the body\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Garrett\");\r",
+							"});\r",
+							"//Validate response time\r",
+							"pm.test(\"Response time is less than 8000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(8000);\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"//Validate Schema\r",
+							"//Respond\r",
+							"var jsonData=pm.response.json();\r",
+							"//Assign schema in a variable\r",
+							"var schema={\r",
+							"\"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"status\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"data\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"id\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"employee_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"employee_salary\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"employee_age\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"profile_image\": {\r",
+							"          \"type\": \"string\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"id\",\r",
+							"        \"employee_name\",\r",
+							"        \"employee_salary\",\r",
+							"        \"employee_age\",\r",
+							"        \"profile_image\"\r",
+							"      ]\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"status\",\r",
+							"    \"data\",\r",
+							"    \"message\"\r",
+							"  ] \r",
+							"\r",
+							"}\r",
+							"pm.test(\"Schema is valid\", function(){\r",
+							" pm.expect(tv4.validate(jsonData,schema)).to.be.true;\r",
+							"});\r",
+							"pm.test(\"Response body is valid\", function() {\r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  var valid = tv4.validate(data, schema, false, true);\r",
+							"  if (valid !== true) {\r",
+							"      console.log(tv4.error);\r",
+							"  }\r",
+							"  pm.expect(valid).to.be.true;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/employee/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a particular employee which doesnt exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "983e4607-31db-47fb-bcba-496cb096701d",
+						"exec": [
+							"//Validate status\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"//Validate string is in the body\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"null\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/employee/30",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"30"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea586096-0d7a-40d4-805e-4099706b5ca7",
+						"exec": [
+							"//Validate if is a json response\r",
+							"pm.test(\"Response if Json\", function () {\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"//Validate status\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"test\",\"salary\":\"123\",\"age\":\"23\"}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/create",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update an employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8a4d5c48-6247-4d1c-adef-e39a7003de5f",
+						"exec": [
+							"//Validate status not found, since the employee doesn´t exist\r",
+							"pm.test(\"Status code is not found 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"//Validate status\r",
+							"pm.test (\"Status is ok\", function () {\r",
+							"     pm.response.to.be.notFound; });\r",
+							"//Validate response time\r",
+							"pm.test(\"Response time is less than 5000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/update/6/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"update",
+						"6",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete an employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "915eb521-1958-4b24-9c3a-89919aadb343",
+						"exec": [
+							"//Validate response time\r",
+							"pm.test(\"Response time is less than 5000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/delete/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"delete",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
